@@ -26,7 +26,6 @@ if (!fs.existsSync(filePath)) {
     process.exit(1);
 }
 
-// Submit the job
 emitter.emitTaskCreated({ filePath, width, height, email });
 
 console.log('Task submitted successfully.');

@@ -1,5 +1,3 @@
-// emitter.js
-// This file will contain the logic for emitting events
 const EventEmitter = require('events');
 const { Worker } = require('worker_threads');
 
@@ -8,7 +6,6 @@ class Emitter extends EventEmitter {
         this.emit('task.created', task);
         console.log(`Task Created: ${task}`);
         
-        // Spawn a worker to resize the image
         const imageResizerWorker = new Worker('./src/workers/imageResizer.js', {
             workerData: {
                 filePath: task.filePath,
