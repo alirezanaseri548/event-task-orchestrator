@@ -1,0 +1,16 @@
+{
+  "name": "event-task-orchestrator",
+  "version": "1.0.0",
+  "description": "## Overview This project is a monolithic Node.js service that handles incoming jobs, emits internal events for processing, offloads CPU-heavy work to `worker_threads`, traces event flow internally, and logs and exposes metrics for observability.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^6.10.1",
+    "sharp": "^0.34.1"
+  }
+}
