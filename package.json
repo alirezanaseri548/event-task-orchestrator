@@ -1,16 +1,22 @@
 {
   "name": "event-task-orchestrator",
-  "version": "1.0.0",
-  "description": "## Overview This project is a monolithic Node.js service that handles incoming jobs, emits internal events for processing, offloads CPU-heavy work to `worker_threads`, traces event flow internally, and logs and exposes metrics for observability.",
+  "version": "1.1.0",
+  "description": "A generic event-driven task orchestrator built with Node.js. It accepts tasks via adapters (CLI), coordinates execution through internal events, offloads work to worker threads, and provides a foundation for retries, dependencies, and failure handling.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node cli.js",
+    "test": "echo \"No tests yet\""
   },
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "event-driven",
+    "task-orchestrator",
+    "worker-threads",
+    "backend"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemailer": "^6.10.1",
-    "sharp": "^0.34.1"
+    "nodemailer": "^6.10.1"
   }
 }
