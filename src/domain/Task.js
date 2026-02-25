@@ -21,6 +21,10 @@
   registerRetry() {
     this.retryPolicy.retries += 1;
   }
+
+  failPermanently() {
+    this.status = "FAILED";
+  }
 }
 
 module.exports = Task;

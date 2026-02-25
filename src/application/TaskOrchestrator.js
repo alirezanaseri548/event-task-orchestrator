@@ -1,5 +1,6 @@
 ﻿const EventBus = require("../infrastructure/EventBus");
 const WorkerPool = require("../infrastructure/WorkerPool");
+const TaskGraph = require("./TaskGraph");
 
 class TaskOrchestrator {
   constructor() {
@@ -9,6 +10,13 @@ class TaskOrchestrator {
 
   register(task) {
     this.tasks.set(task.id, task);
+
+    const graph = new TaskGraph(this.tasks);
+    if (graph.detectCycle()) {
+      this.tasks.delete(task.id);
+      throw new Error("Cycle detected in task dependencies");
+    }
+
     EventBus.emit("task:registered", task);
     this.tryExecute(task);
   }
@@ -20,6 +28,17 @@ class TaskOrchestrator {
       const dep = this.tasks.get(depId);
       return dep && dep.status === "COMPLETED";
     });
+
+    const depsFailed = task.dependencies.some(depId => {
+      const dep = this.tasks.get(depId);
+      return dep && dep.status === "FAILED";
+    });
+
+    if (depsFailed) {
+      task.failPermanently();
+      EventBus.emit("task:failed", { task, error: "Dependency failed" });
+      return;
+    }
 
     if (!depsDone) return;
 
@@ -38,7 +57,6 @@ class TaskOrchestrator {
     task.status = "COMPLETED";
     EventBus.emit("task:completed", task);
 
-    // Try to unlock dependent tasks
     for (const t of this.tasks.values()) {
       this.tryExecute(t);
     }
@@ -55,7 +73,7 @@ class TaskOrchestrator {
       return;
     }
 
-    task.status = "FAILED";
+    task.failPermanently();
     EventBus.emit("task:failed", { task, error });
   }
 }
